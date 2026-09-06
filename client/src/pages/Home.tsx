@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { ArrowDown, ArrowRight, ArrowUpRight, AtSign, BarChart3, BarChart2, Briefcase, Camera, Check, ChevronLeft, ChevronRight, Compass, ExternalLink, Film, Hash, Heart, Laptop, Layers, Lightbulb, Mail, MapPin, Menu, MessageCircle, Palette, Play, PlayCircle, Search, Send, Sparkles, TrendingUp, Users, Video, X, Zap } from 'lucide-react'
+import { ArrowDown, ArrowRight, ArrowUpRight, AtSign, BarChart3, BarChart2, Briefcase, Camera, Check, ChevronLeft, ChevronRight, Compass, ExternalLink, Film, Hash, Heart, ImageIcon, Laptop, Layers, Lightbulb, Mail, MapPin, Menu, MessageCircle, Palette, Play, PlayCircle, Search, Send, Sparkles, TrendingUp, Users, Video, X, Zap } from 'lucide-react'
 import { CountUp, ImageSlot, Pill, Reveal, SectionIntro, TiltCard } from '../components/PortfolioUI'
 
 const services = [
@@ -16,6 +16,7 @@ const experiences = [
     role: 'DIGITAL MARKETING INTERN',
     date: 'JUN 2026 — PRESENT',
     image: '/images/arvind/Arvind_Advertizing2.PNG',
+    brandLogo: { src: '/images/arvind/logo.PNG', alt: 'Arvind Advertizing logo' },
     alt: 'Arvind Advertizing digital marketing and website presence',
     copy: 'Built the brand digital presence from scratch across Instagram, LinkedIn, and Google Business Profile, combining SEO search strategy, content systems, web optimization and analytics at the center.',
     metrics: [
@@ -29,6 +30,7 @@ const experiences = [
     role: 'SOCIAL MEDIA MANAGEMENT EXECUTIVE',
     date: 'FEB 2025 — PRESENT',
     image: '/images/helix/HELIX_IG.PNG',
+    brandLogo: { src: '/images/helix/logo.png', alt: 'Helix Esports logo' },
     alt: 'Helix Esports viral social media reach and tournament content',
     copy: 'Creating community-led content systems managing social media strategy for esports and gaming(BGCS LAN, BGIS 2026) and gaming creators, driving explosive organic reach with reels crossing 9.4 Million views.',
     metrics: [
@@ -38,6 +40,20 @@ const experiences = [
     ],
   },
 ]
+
+function BrandBadge({ logo, label }: { logo: { src: string; alt: string }; label: string }) {
+  const [failed, setFailed] = useState(false)
+
+  return (
+    <div className="visual-sticker visual-sticker--logo" aria-label={label} title={label}>
+      {!failed ? (
+        <img src={logo.src} alt={logo.alt} onError={() => setFailed(true)} />
+      ) : (
+        <ImageIcon size={30} strokeWidth={1.5} aria-hidden="true" />
+      )}
+    </div>
+  )
+}
 
 const toolIconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
   'Instagram': AtSign,
@@ -507,9 +523,7 @@ function DigitalMarketing() {
                     dark
                     objectFit="cover"
                   />
-                  <div className="visual-sticker" aria-label={index === 0 ? 'Brand from zero' : '9.4 million viral reach'}>
-                    {index === 0 ? <><span>BRAND</span><span>FROM ZERO</span></> : <><span>9.4M+</span><span>VIRAL REACH</span></>}
-                  </div>
+                  <BrandBadge logo={experience.brandLogo} label={experience.company} />
                 </div>
                 <div className="experience-copy">
                   <div className="experience-meta">
@@ -629,45 +643,45 @@ function Projects() {
             const shownImage = activeSlide === 1 && project.secondImage ? project.secondImage : project.image
 
             return (
-            <TiltCard key={project.title}>
-              <article className={`project-card project-card--${index}`} onClick={() => setSelected(project)}>
-                <div className="project-card-image">
-                  <ImageSlot
-                    src={shownImage}
-                    alt={project.title}
-                    index={index}
-                    dark={index % 2 === 1}
-                  />
-                  <span className="project-like"><Heart size={15} /></span>
-                  {hasSlider && (
-                    <div className="project-card-slider" aria-label={`${project.title} image gallery`}>
-                      <button
-                        type="button"
-                        className="project-slider-control"
-                        aria-label="Show previous image"
-                        onClick={(event) => { event.stopPropagation(); setSlides(current => ({ ...current, [index]: activeSlide === 0 ? 1 : 0 })) }}
-                      ><ChevronLeft size={17} /></button>
-                      <div className="project-slider-dots" aria-hidden="true">
-                        <span className={activeSlide === 0 ? 'is-active' : ''} />
-                        <span className={activeSlide === 1 ? 'is-active' : ''} />
+              <TiltCard key={project.title}>
+                <article className={`project-card project-card--${index}`} onClick={() => setSelected(project)}>
+                  <div className="project-card-image">
+                    <ImageSlot
+                      src={shownImage}
+                      alt={project.title}
+                      index={index}
+                      dark={index % 2 === 1}
+                    />
+                    <span className="project-like"><Heart size={15} /></span>
+                    {hasSlider && (
+                      <div className="project-card-slider" aria-label={`${project.title} image gallery`}>
+                        <button
+                          type="button"
+                          className="project-slider-control"
+                          aria-label="Show previous image"
+                          onClick={(event) => { event.stopPropagation(); setSlides(current => ({ ...current, [index]: activeSlide === 0 ? 1 : 0 })) }}
+                        ><ChevronLeft size={17} /></button>
+                        <div className="project-slider-dots" aria-hidden="true">
+                          <span className={activeSlide === 0 ? 'is-active' : ''} />
+                          <span className={activeSlide === 1 ? 'is-active' : ''} />
+                        </div>
+                        <button
+                          type="button"
+                          className="project-slider-control"
+                          aria-label="Show next image"
+                          onClick={(event) => { event.stopPropagation(); setSlides(current => ({ ...current, [index]: activeSlide === 0 ? 1 : 0 })) }}
+                        ><ChevronRight size={17} /></button>
                       </div>
-                      <button
-                        type="button"
-                        className="project-slider-control"
-                        aria-label="Show next image"
-                        onClick={(event) => { event.stopPropagation(); setSlides(current => ({ ...current, [index]: activeSlide === 0 ? 1 : 0 })) }}
-                      ><ChevronRight size={17} /></button>
-                    </div>
-                  )}
-                </div>
-                <div className="project-card-copy">
-                  <span>{project.category}</span>
-                  <h3>{project.title}</h3>
-                  <p>{project.copy}</p>
-                  <strong>{project.result} ↗</strong>
-                </div>
-              </article>
-            </TiltCard>
+                    )}
+                  </div>
+                  <div className="project-card-copy">
+                    <span>{project.category}</span>
+                    <h3>{project.title}</h3>
+                    <p>{project.copy}</p>
+                    <strong>{project.result} ↗</strong>
+                  </div>
+                </article>
+              </TiltCard>
             )
           })}
         </div>
